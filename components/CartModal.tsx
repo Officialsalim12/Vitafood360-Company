@@ -73,7 +73,7 @@ export default function CartModal() {
         </div>
       )}
 
-      {/* Payment modal using cart total as amount */}
+      {/* Payment model on the cart */}
       <PaymentModal
         product={{ id: 0, name: 'Cart Checkout', price: total }}
         amountOverride={total}

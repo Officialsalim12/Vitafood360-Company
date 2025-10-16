@@ -19,24 +19,33 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Visit Vitafoods360 on Facebook"
+                title="Facebook (opens in a new tab)"
               >
-                <Facebook size={24} />
+                <Facebook size={24} aria-hidden="true" focusable="false" />
+                <span className="sr-only">Facebook</span>
               </a>
               <a
                 href="https://instagram.com/vitafoods360"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Visit Vitafoods360 on Instagram"
+                title="Instagram (opens in a new tab)"
               >
-                <Instagram size={24} />
+                <Instagram size={24} aria-hidden="true" focusable="false" />
+                <span className="sr-only">Instagram</span>
               </a>
               <a
                 href="https://twitter.com/vitafoods360"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Visit Vitafoods360 on X (Twitter)"
+                title="X (Twitter) (opens in a new tab)"
               >
-                <Twitter size={24} />
+                <Twitter size={24} aria-hidden="true" focusable="false" />
+                <span className="sr-only">X (Twitter)</span>
               </a>
             </div>
           </div>

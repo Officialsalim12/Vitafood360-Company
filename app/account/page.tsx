@@ -53,6 +53,15 @@ export default function AccountPage() {
   const [passwordSaving, setPasswordSaving] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null)
 
+  // Address form state
+  const [addressLabel, setAddressLabel] = useState('Home')
+  const [addressLine, setAddressLine] = useState('')
+  const [addressCity, setAddressCity] = useState('')
+  const [addressState, setAddressState] = useState('')
+  const [defaultAddressId, setDefaultAddressId] = useState<number | null>(null)
+  const [addressSaving, setAddressSaving] = useState(false)
+  const [addressMessage, setAddressMessage] = useState<string | null>(null)
+
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
@@ -70,6 +79,18 @@ export default function AccountPage() {
 
     getUser()
   }, [])
+
+  // When addresses load/update, hydrate the address form from the default address
+  useEffect(() => {
+    const def = addresses.find((a) => a.is_default) || addresses[0]
+    if (def) {
+      setDefaultAddressId(def.id)
+      setAddressLabel(def.label || 'Home')
+      setAddressLine(def.full_address || '')
+      setAddressCity(def.city || '')
+      setAddressState(def.state || '')
+    }
+  }, [addresses])
 
   const fetchUserProfile = async (userId: string) => {
     const { data } = await supabase
@@ -167,6 +188,56 @@ export default function AccountPage() {
       setPasswordMessage(error.message || 'Failed to change password')
     } finally {
       setPasswordSaving(false)
+    }
+  }
+
+  const handleSaveAddress = async () => {
+    try {
+      if (!user) return
+      setAddressMessage(null)
+      setAddressSaving(true)
+
+      if (defaultAddressId) {
+        const { error } = await supabase
+          .from('addresses')
+          .update({
+            label: addressLabel,
+            full_address: addressLine,
+            city: addressCity,
+            state: addressState,
+            is_default: true,
+          })
+          .eq('id', defaultAddressId)
+          .eq('user_id', user.id)
+        if (error) throw error
+      } else {
+        const { error } = await supabase
+          .from('addresses')
+          .insert([
+            {
+              user_id: user.id,
+              label: addressLabel || 'Home',
+              full_address: addressLine,
+              city: addressCity,
+              state: addressState,
+              is_default: true,
+            },
+          ])
+        if (error) throw error
+      }
+
+      await supabase
+        .from('addresses')
+        .update({ is_default: false })
+        .eq('user_id', user.id)
+        .neq('id', defaultAddressId || 0)
+
+      await fetchAddresses(user.id)
+      setAddressMessage('Address saved')
+    } catch (e: any) {
+      setAddressMessage(e.message || 'Failed to save address')
+    } finally {
+      setAddressSaving(false)
     }
   }
 
@@ -400,6 +471,64 @@ export default function AccountPage() {
                     </button>
                     {profileMessage && (
                       <span className="text-sm text-gray-600">{profileMessage}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Delivery Address */}
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <h3 className="font-medium text-gray-900 mb-4">Delivery Address</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Label</label>
+                      <input
+                        type="text"
+                        value={addressLabel}
+                        onChange={(e) => setAddressLabel(e.target.value)}
+                        className="input-field"
+                        placeholder="e.g., Home, Work"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                      <input
+                        type="text"
+                        value={addressLine}
+                        onChange={(e) => setAddressLine(e.target.value)}
+                        className="input-field"
+                        placeholder="e.g., 16 PLAS George Drive, Leicester Peak"
+                        autoComplete="street-address"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                      <input
+                        type="text"
+                        value={addressCity}
+                        onChange={(e) => setAddressCity(e.target.value)}
+                        className="input-field"
+                        placeholder="e.g., Freetown"
+                        autoComplete="address-level2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">State/Province</label>
+                      <input
+                        type="text"
+                        value={addressState}
+                        onChange={(e) => setAddressState(e.target.value)}
+                        className="input-field"
+                        placeholder="e.g., Western Area"
+                        autoComplete="address-level1"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center space-x-3">
+                    <button onClick={handleSaveAddress} disabled={addressSaving} className="btn-primary">
+                      {addressSaving ? 'Saving...' : 'Save Address'}
+                    </button>
+                    {addressMessage && (
+                      <span className="text-sm text-gray-600">{addressMessage}</span>
                     )}
                   </div>
                 </div>
