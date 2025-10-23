@@ -10,9 +10,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.38.4",
     "critters": "^0.0.23",
     "lucide-react": "^0.294.0",
+    "monime-package": "^1.0.8",
     "next": "^14.2.33",
     "peer": "^1.0.2",
     "react": "^18",

@@ -71,7 +71,7 @@ export default function ProductQuickAddModal({
               )}
               <div className="flex-1">
                 <p className="text-gray-700 mb-2 line-clamp-4">{product.description}</p>
-                <div className="text-2xl font-bold text-primary-600">Le {product.price.toLocaleString()}</div>
+                <div className="text-2xl font-bold text-primary-600">SLE {product.price.toLocaleString()}</div>
               </div>
             </div>
 
@@ -88,7 +88,7 @@ export default function ProductQuickAddModal({
 
               <div className="text-lg">
                 <span className="text-gray-600 mr-2">Total:</span>
-                <span className="font-bold">Le {total.toLocaleString()}</span>
+                <span className="font-bold">SLE {total.toLocaleString()}</span>
               </div>
             </div>
 
@@ -102,7 +102,7 @@ export default function ProductQuickAddModal({
 
       <PaymentModal
         product={{ id: product.id, name: product.name, price: product.price }}
-        amountOverride={total}
+        quantity={qty}
         isOpen={payOpen}
         onClose={() => setPayOpen(false)}
       />

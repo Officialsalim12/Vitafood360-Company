@@ -34,9 +34,10 @@ interface Product {
 
 interface ProductCardProps {
   product: Product
+  showPriceAndCart?: boolean
 }
 
-const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
+const ProductCard = memo(function ProductCard({ product, showPriceAndCart = true }: ProductCardProps) {
   const [showQuickAdd, setShowQuickAdd] = useState(false)
   const [imageError, setImageError] = useState(false)
 
@@ -77,27 +78,31 @@ const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
         <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
         <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
         
-        <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-primary-600">
-            Le {product.price.toLocaleString()}
-          </span>
-          <button
-            onClick={handleOpenQuickAdd}
-            className="btn-primary flex items-center space-x-2"
-            aria-label="Add"
-            title="Add"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            <span>+</span>
-          </button>
-        </div>
+        {showPriceAndCart && (
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-bold text-primary-600">
+              SLE {product.price.toLocaleString()}
+            </span>
+            <button
+              onClick={handleOpenQuickAdd}
+              className="btn-primary flex items-center space-x-2"
+              aria-label="Add"
+              title="Add"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              <span>+</span>
+            </button>
+          </div>
+        )}
       </div>
 
-      <ProductQuickAddModal
-        product={product}
-        isOpen={showQuickAdd}
-        onClose={() => setShowQuickAdd(false)}
-      />
+      {showPriceAndCart && (
+        <ProductQuickAddModal
+          product={product}
+          isOpen={showQuickAdd}
+          onClose={() => setShowQuickAdd(false)}
+        />
+      )}
     </>
   )
 })

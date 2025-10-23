@@ -4,12 +4,11 @@ import { useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 
 export default function AutoLogout() {
-  // Disable in development to avoid noisy unload handlers and network beacons
-  if (process.env.NODE_ENV !== 'production') {
-    return null
-  }
-
   useEffect(() => {
+    // Disable in development to avoid noisy unload handlers and network beacons
+    if (process.env.NODE_ENV !== 'production') {
+      return
+    }
     let hasLoggedOut = false
     let lastVisibilityLogout = 0
 

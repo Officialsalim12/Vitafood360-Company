@@ -135,7 +135,7 @@ export default function AboutPage() {
                 with fresh, healthy, and delicious bakery products that support a nutritious lifestyle.
               </p>
               <p className="text-lg text-gray-600 mb-6">
-                Starting as a small family business, we have grown to become a trusted name in Sierra Leone's 
+                Starting as a small family business, we have grown to become a trusted name in Sierra Leone&apos;s 
                 food industry. Our commitment to quality, health, and community has remained unchanged since day one.
               </p>
               <p className="text-lg text-gray-600">
@@ -164,7 +164,7 @@ export default function AboutPage() {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
               <p className="text-gray-600">
                 To provide fresh, healthy, and delicious bakery products that promote wellness and 
-                support our community's nutritional needs while maintaining the highest standards of quality.
+                support our community&apos;s nutritional needs while maintaining the highest standards of quality.
               </p>
             </div>
             <div className="card text-center">
