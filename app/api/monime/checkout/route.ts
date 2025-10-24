@@ -49,8 +49,8 @@ export async function POST(request: Request) {
 
     // Build absolute URLs on the server
     const appUrl = process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL || request.headers.get('origin') || ''
-    const successUrl = `${appUrl.replace(/\/$/, '')}/payment/success`
-    const cancelUrl = `${appUrl.replace(/\/$/, '')}/payment/cancel`
+    const successUrl = `${appUrl.replace(/\/$/, '')}/`
+    const cancelUrl = `${appUrl.replace(/\/$/, '')}/`
 
     // Prepare Monime API request
     const monimeEndpoint = 'https://api.monime.io/v1/checkout-sessions'
