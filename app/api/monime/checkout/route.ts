@@ -48,9 +48,10 @@ export async function POST(request: Request) {
     }
 
     // Build absolute URLs on the server
+    // Point to API routes that will handle the redirect properly
     const appUrl = process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL || request.headers.get('origin') || ''
-    const successUrl = `${appUrl.replace(/\/$/, '')}/`
-    const cancelUrl = `${appUrl.replace(/\/$/, '')}/`
+    const successUrl = `${appUrl.replace(/\/$/, '')}/api/payment/success`
+    const cancelUrl = `${appUrl.replace(/\/$/, '')}/api/payment/cancel`
 
     // Prepare Monime API request
     const monimeEndpoint = 'https://api.monime.io/v1/checkout-sessions'

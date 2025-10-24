@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { XCircle } from 'lucide-react'
+import { Suspense } from 'react'
 
-export default function PaymentCancelPage() {
+function PaymentCancelContent() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
@@ -49,5 +50,17 @@ export default function PaymentCancelPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function PaymentCancelPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    }>
+      <PaymentCancelContent />
+    </Suspense>
   )
 }

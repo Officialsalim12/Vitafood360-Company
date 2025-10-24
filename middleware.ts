@@ -7,22 +7,28 @@ export function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  const url = req.nextUrl
-  const referer = req.headers.get('referer')
-  const isExternalEntry = !referer || !referer.startsWith(`${url.origin}/`)
+  try {
+    const url = req.nextUrl
+    const referer = req.headers.get('referer')
+    const isExternalEntry = !referer || !referer.startsWith(`${url.origin}/`)
 
-  const hasSupabaseCookie = Boolean(
-    req.cookies.get('sb-access-token') ||
-    req.cookies.get('sb-refresh-token') ||
-    req.cookies.get('sb:token') ||
-    req.cookies.get('sb:refreshToken')
-  )
+    const hasSupabaseCookie = Boolean(
+      req.cookies.get('sb-access-token') ||
+      req.cookies.get('sb-refresh-token') ||
+      req.cookies.get('sb:token') ||
+      req.cookies.get('sb:refreshToken')
+    )
 
-  if (!hasSupabaseCookie && isExternalEntry && url.pathname !== '/') {
-    return NextResponse.redirect(new URL('/', url))
+    if (!hasSupabaseCookie && isExternalEntry && url.pathname !== '/') {
+      return NextResponse.redirect(new URL('/', url))
+    }
+
+    return NextResponse.next()
+  } catch (error) {
+    // If there's any error in middleware, just continue
+    console.error('Middleware error:', error)
+    return NextResponse.next()
   }
-
-  return NextResponse.next()
 }
 
 export const config = {
